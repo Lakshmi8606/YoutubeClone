@@ -19,3 +19,44 @@
   padding: 6px 10px;
   width: 300px;
 }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+}
+#video-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+.video-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.video-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.video-info {
+  padding: 10px;
+}
+
+.video-info h3 {
+  font-size: 16px;
+  margin: 4px 0;
+}
+
+.video-info p {
+  font-size: 14px;
+  color: #666;
+}
+
