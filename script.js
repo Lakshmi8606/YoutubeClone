@@ -1,36 +1,9 @@
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-btn");
-//Initial code for rendering videos using data from js array and later commented for itegrating youtube api.
-// const videos=[
-//     {
-//         thumbnail: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
-//     title: "Never Gonna Give You Up",
-//     channel: "Rick Astley",
-//     views: "1.2B views",
-//     date: "14 years ago"
-//     },
-    
-// ]
-
-// const videoGrid=document.getElementById("video-grid")
-
-// videos.forEach(video=>{
-//     const card=document.createElement("div")
-//     card.className="video-card"
-//     card.innerHTML=`
-//     <img src="${video.thumbnail}" alt="Thumbnail">
-// <div class="video-info">
-// <h3>${video.title}</h3>
-// <p>${video.channel} • ${video.views} • ${video.date}</p>
-// </div>
-//     `
-//     videoGrid.appendChild(card)
-// })
-
-//Integrating with youtube API
-
-const API_KEY = "AIzaSyBeN4otJcq21KROEbF7oVRuAfg8Al8LMq0";
 const videoGrid = document.getElementById("video-grid");
+const modal = document.getElementById("video-modal");
+const modalIframe = document.getElementById("modal-iframe");
+const closeModalBtn = document.getElementById("close-modal");
 
 async function fetchVideos(query = "javascript") {
   const response = await fetch(
@@ -38,10 +11,12 @@ async function fetchVideos(query = "javascript") {
   );
   const data = await response.json();
 
-  videoGrid.innerHTML=""
+  videoGrid.innerHTML = "";
 
   data.items.forEach(item => {
     const video = item.snippet;
+    const videoId = item.id.videoId;
+
     const card = document.createElement("div");
     card.className = "video-card";
     card.innerHTML = `
@@ -51,24 +26,34 @@ async function fetchVideos(query = "javascript") {
         <p>${video.channelTitle}</p>
       </div>
     `;
+
+    card.addEventListener("click", () => {
+      modalIframe.src = `https://www.youtube.com/embed/${videoId}`;
+      modal.classList.remove("hidden");
+    });
+
     videoGrid.appendChild(card);
   });
 }
 
 window.onload = () => {
-  fetchVideos("trending"); // Default topic
+  fetchVideos("trending");
 };
 
-//Adding functionality to search btn
 searchBtn.addEventListener("click", () => {
   const query = searchInput.value.trim();
   if (query) {
     fetchVideos(query);
   }
 });
-//Trigerring search on enter key
+
 searchInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     searchBtn.click();
   }
+});
+
+closeModalBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
+  modalIframe.src = "";
 });
